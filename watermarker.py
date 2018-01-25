@@ -20,9 +20,11 @@ def set_opacity(im, opacity):
     im.putalpha(alpha)
     return im
 
-def watermark(im, mark, type, args, opacity=1.0):
+def watermark(im, mark, args):
     """添加水印"""
     try:
+        type = args.type
+        opacity = args.opacity
         if opacity < 1:
             mark = set_opacity(mark, opacity)
         if im.mode != 'RGBA':
@@ -52,7 +54,7 @@ def add_mark(imagePath, watermarkPath, args):
     print "\nprocessing image", imagePath
     im = Image.open(imagePath)
     mark = Image.open(watermarkPath)
-    image = watermark(im, mark, args.type, args, 1)
+    image = watermark(im, mark, args)
     if image:
         name = os.path.basename(imagePath)
         if not os.path.exists(args.out):
