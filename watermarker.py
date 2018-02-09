@@ -29,9 +29,9 @@ def watermark(im, mark, args):
             mark = set_opacity(mark, opacity)
         if im.mode != 'RGBA':
             im = im.convert('RGBA')
-        if im.size[0] < mark.size[0] or im.size[1] < mark.size[1]:
-            print "The mark image size is larger size than original image file."
-            return False
+        # if im.size[0] < mark.size[0] or im.size[1] < mark.size[1]:
+        #     print "The mark image size is larger size than original image file."
+        #     return False
 
         print u"image size:", im.size
         print u"watermark size:", mark.size
@@ -42,7 +42,8 @@ def watermark(im, mark, args):
                 # print x_index, y_index
                 layer.paste(mark, (x_index * (mark.size[0] + args.space), y_index * (mark.size[1] + args.space)))
 
-        return Image.composite(layer, im, layer)
+        # return Image.composite(layer, im, layer)
+        return Image.alpha_composite(im, layer)
     except Exception as e:
         print "Sorry, Exception: " + str(e)
         return False
