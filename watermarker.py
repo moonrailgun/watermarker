@@ -24,7 +24,8 @@ def watermark(im, mark, args):
     """添加水印"""
     try:
         type = args.type
-        opacity = args.opacity
+        opacity = float(args.opacity)
+        print 'image mode:', im.mode
         if opacity < 1:
             mark = set_opacity(mark, opacity)
         if im.mode != 'RGBA':
@@ -43,7 +44,9 @@ def watermark(im, mark, args):
                 layer.paste(mark, (x_index * (mark.size[0] + args.space), y_index * (mark.size[1] + args.space)))
 
         # return Image.composite(layer, im, layer)
-        return Image.alpha_composite(im, layer)
+        # return Image.alpha_composite(im, layer)
+        im.paste(layer.convert('RGB'), mask=layer) # 强制丢弃水印图的半透明通道，根据蒙版来拼合
+        return im
     except Exception as e:
         print "Sorry, Exception: " + str(e)
         return False
